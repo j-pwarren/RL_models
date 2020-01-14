@@ -84,10 +84,10 @@ if __name__ == '__main__':
 
     optimal_frame = optimal_frame.unstack().to_frame()
     optimal_frame.reset_index(inplace=True)
-    optimal_frame.columns = ['epsilon', 'step', 'value']
+    optimal_frame.columns = ['epsilon', 'step', 'optimal']
 
     # Plot the rewards of each of the learners
-    ax = sns.lineplot(x="step", y="value", hue="epsilon", data=optimal_frame)
+    ax = sns.lineplot(x="step", y="optimal", hue="epsilon", data=optimal_frame)
     plt.show()
 
     # Works up to this point - next step non-stationary dgp
