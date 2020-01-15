@@ -1,5 +1,7 @@
 import numpy as np
 import seaborn as sns
+import matplotlib
+matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 import k_bandit as kb # This is a user defined function
