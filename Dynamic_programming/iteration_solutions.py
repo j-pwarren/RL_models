@@ -46,7 +46,7 @@ def get_policy(env, v, gamma = 1):
         for a in range(action):
             for info in env.P[s][a]:
                 # calculate the expected value for each of the state action pair
-                prob, reward, next_s, other = info
+                prob, next_s, reward, other = info
                 q_sa[a] +=  prob*(reward+ gamma*v[int(next_s)])
         # The state action pair with the highest expected value is the policy
         policy[s] = np.argmax(q_sa)
@@ -54,21 +54,26 @@ def get_policy(env, v, gamma = 1):
 
 def run_episode(env, policy, gamma, render = False):
     # To ensure we start from a fresh game reset the episode
-    obs = env.reset()
+    state = env.reset()
     total_reward = 0
     step_index = 0
 
     done = False
 
-    while done:
+    while not done:
         if render == True:
             env.render()
 
-        obs, reward, done, info = env.step(int(policy[obs]))
+        state, reward, done, info = env.step(int(policy[state]))
         total_reward += (gamma ** step_index * reward)
         step_index += 1
 
     return total_reward
+
+def evaluate_policy(env, policy, gamma = 1, niter = 1000):
+    total_reward = [run_episode(env, policy, gamma = gamma) for ii in range(niter)]
+
+    return np.mean(total_reward)
 
 
 
