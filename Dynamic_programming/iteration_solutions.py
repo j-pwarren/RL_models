@@ -33,6 +33,23 @@ def value_iteration(env, num_iterations = 10000, epsilon = 1e-20, gamma = 1):
 
     return V
 
+def compute_policy_value(policy, env, gamma = 1, epsilon = 1e-5, niter = 5000):
+    # Get the value for the chosen policy at each time iterate through until the value\
+    # function converges
+    V = np.zeros(env.observation_space.n)
+    ii = 0
+    while(ii < niter):
+        prev_v = np.copy(V)
+        ii += 1
+        for s in range(env.nS):
+            policy_action = policy[s]
+            V[s] = sum([prob*(reward + gamma*prev_v[next_s])
+                for prob, next_s, reward, info in env.P[s][policy_action]])
+
+        if (np.fabs(V - prev_v) <= epsilon).all():
+            break
+    return V
+
 def get_policy(env, v, gamma = 1):
     "Given the valuation function create the policy"
 
@@ -76,5 +93,18 @@ def evaluate_policy(env, policy, gamma = 1, niter = 1000):
     return np.mean(total_reward)
 
 
+def policy_iteration(env, gamma = 1, niter = 2000, epsilon = 1e-5):
+    # inititalise policy as a random choice
+    policy = np.random.choice(env.action_space.n, size = env.observation_space.n)
+    converged = False
 
+    while not converged:
+        prev_policy = np.copy(policy)
+        old_policy_value = compute_policy_value(policy, env)
+        policy = get_policy(env, old_policy_value)
+
+        if (policy == prev_policy).all():
+            break
+
+    return policy
 
