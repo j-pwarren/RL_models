@@ -21,29 +21,15 @@ def run_episode(env):
 
     return Q_sa
 
-def get_first_visit(Q_sa, end_pos):
-    # Extract the state and action pairs to search for duplicates, these are the 0 - 4th element in the list
-    # Convert the list to a tuple so it can be used as a dictionary key
-    state_action = [tuple(ele[:end_pos]) for ele in Q_sa]
-
+def get_first_visit(state_action):
     # Create a default dictionary to collect the state action tuples
     episode_sa = defaultdict(list)
     # Loop over each element in the state, action pair
     for ii, item in enumerate(state_action):
-        episode_sa[item].append(ii)
+        episode_sa[item[0]].append(ii)
 
-    first_index = [item[0] for key, item in episode_sa.items()]
+    return episode_sa
 
-    return first_index
-
-def calculate_returns(Q_sa, gamma = 1):
-    # Initialise G at 0
-    G = 0
-    for ii, element in enumerate(Q_sa):
-        # The final element in Q_sa is the reward for each state action
-        G += gamma**ii*element[-1]
-
-    return G
 
 
 
