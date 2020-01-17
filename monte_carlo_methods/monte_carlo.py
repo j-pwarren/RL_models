@@ -45,8 +45,6 @@ def calculate_returns(Q_sa, gamma = 1):
 
     return G
 
-def a_func():
-    return 
 
 
 
