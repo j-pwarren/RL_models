@@ -30,6 +30,16 @@ def get_first_visit(state_action):
 
     return episode_sa
 
+class make_policy():
+    def __init__(self, state):
+        self.state = state
+        self.maximum = []
+
+    def find_max(self):
+
+        self.maximum.append(max(self.state))
+
+
 
 
 
